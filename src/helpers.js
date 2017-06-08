@@ -1,3 +1,15 @@
+//pass in json objects, sort by fact length
+export function sortByFactLength(a, b) {
+	console.log(a, b);
+	if (a.fact.length < b.fact.length) {
+		return -1;
+	}
+	if (a.fact.length > b.fact.length) {
+		return 1;
+	}
+	return 0;
+}
+
 export function getRandoImage(imageArr=[]) {
 	fetch('http://mapd-cats.azurewebsites.net/catpics')
 		.then(function(response) {
