@@ -5,7 +5,6 @@ import posts from './posts';
 function isFetching(state=false, action) {
 	switch (action.type) {
 		case 'REQUEST_PIC':
-			console.log("REQUEST FROM ISFETCHING")
 			return Object.assign({}, state, {
 		    	isFetching: true
 		    })

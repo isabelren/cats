@@ -9,7 +9,7 @@ import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/index';
 
-import {fetchPostsIfNeeded} from './actionCreators';
+//import {fetchPostsIfNeeded} from './actionCreators';
 
 const defaultState = {
 	posts: [],
@@ -24,10 +24,6 @@ const store = createStore(
 		thunkMiddleware
 	)
 );
-
-/*store.dispatch(fetchPostsIfNeeded('reactjs')).then(() =>
-  console.log(store.getState())
-)*/
 
 render(
   <Provider store={store}>

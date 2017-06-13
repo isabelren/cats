@@ -10,33 +10,6 @@ export function sortByFactLength(a, b) {
 	return 0;
 }
 
-export function getRandoImage(imageArr=[]) {
-	fetch('http://mapd-cats.azurewebsites.net/catpics')
-		.then(function(response) {
-			if (response.status >= 400) {
-			  throw new Error("Bad response from server");
-			}
-			return response.text();
-		})
-		.then(function(text) {
-			const parseString = require('xml2js-parser').parseString;
-			parseString(text, (err, result) => {
-			  const imageArr = result.response.data[0].images[0].image
-			    .map(function(a) {return a.url});
-			  var rand = imageArr[Math.floor(Math.random() * imageArr.length)];
-			  return rand;
-			});
-		});
-}
-
-// const parseString = require('xml2js-parser').parseString;
-          
-//           parseString(text, (err, result) => {
-//             const imageArr = result.response.data[0].images[0].image
-//               .map(function(a) {return a.url});
-//             var rand = imageArr[Math.floor(Math.random() * imageArr.length)];
-//             return rand;
-//           })
 export function getRandoFact() {
 	const facts = ["The average cat sleeps 16-18 hours per day.","Calico cats are almost always female.","Most cats are lactose intolerant and should not be given cow’s milk.","Cats knead with their paws when they are happy.",
 	"A male cat is called a “Tom” and a female cat is called a “Queen.”","Cats can get tapeworm from eating mice.",

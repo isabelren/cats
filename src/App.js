@@ -1,38 +1,44 @@
 import React, { Component } from 'react';
 import './App.css';
 import Post from './Post';
-import {fetchPostsIfNeeded} from './actionCreators'
+import * as actionCreators from './actionCreators';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
-    this.handleRefreshClick = this.handleRefreshClick.bind(this);
+    this.handleAddClick = this.handleAddClick.bind(this);
+    this.sortByFacts= this.sortByFacts.bind(this);
   }
   componentDidMount() {
-    const { dispatch} = this.props
-    dispatch(fetchPostsIfNeeded());
+    this.props.fetchPosts();
   }
 
   handleChange(nextSubreddit) {
-    this.props.dispatch(fetchPostsIfNeeded());
+    this.props.fetchPosts();
   }
 
-  handleRefreshClick(e) {
+  handleAddClick(e) {
     e.preventDefault();
-    this.props.dispatch(fetchPostsIfNeeded());
+    this.props.fetchPosts();
+  }
+
+  sortByFacts(e) {
+    e.preventDefault();
+    this.props.sortByFacts();
   }
 
   render() {
     return (
         <div className="gallery">
-          <button onClick={this.handleRefreshClick}>+Add Cat</button>
-          <button onClick={this.props.sortByFacts}>Sort by fact length</button>
+          <button onClick={this.handleAddClick}>+Add Cat</button>
+          <button onClick={this.sortByFacts}>Sort by fact length</button>
           <ul className="list-of-posts">
             {
               this.props.posts.map((postval, i) => {
-              return <Post key={i} details={postval} deletePost={this.deletePost}/>
+              return <Post key={i} details={postval} {...this.props}/>
               })
             } 
           </ul>
@@ -58,5 +64,9 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+function mapDispachToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispachToProps)(App)
 //export default App;
