@@ -12,7 +12,7 @@ class Post extends React.Component {
 				<h3>{details.fact}</h3>
 				<img src={details.url} alt="" className="catpic"/>
 				<br></br>
-				<button onClick={this.deletePost}>Delete Cat</button>
+				<button onClick={this.props.removeCat}>Delete Cat</button>
 			</div>
 		)
 	}

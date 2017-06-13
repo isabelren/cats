@@ -1,81 +1,62 @@
 import React, { Component } from 'react';
 import './App.css';
 import Post from './Post';
-import { getRandoFact, getRandoImage, sortByFactLength } from './helpers';
+import {fetchPostsIfNeeded} from './actionCreators'
+import { connect } from 'react-redux';
 
-// Component: one post is an image plus a fact
-// Component: list of posts
 class App extends Component {
-  constructor() {
-    super();
-
-    this.addPost = this.addPost.bind(this);
-    this.deletePost = this.deletePost.bind(this);
-    this.sortByFacts = this.sortByFacts.bind(this);
-
-    this.state={
-      posts:[],
-      count: 0
-    }
-    for (let i = 0; i < 3; i++) {
-      this.addPost();
-    }
+  constructor(props) {
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleRefreshClick = this.handleRefreshClick.bind(this);
+  }
+  componentDidMount() {
+    const { dispatch} = this.props
+    dispatch(fetchPostsIfNeeded());
   }
 
-  addPost = () => {
-    let post = {};
-    fetch('http://mapd-cats.azurewebsites.net/catpics')
-      .then(function(response) {
-        if (response.status >= 400) {
-          throw new Error("Bad response from server");
-        }
-        return response.text();
-      })
-      .then((text) => {
-        const parseString = require('xml2js-parser').parseString;
-        parseString(text, (err, result) => {
-          post["url"] = result.response.data[0].images[0].image[1].url[0];
-
-          post["fact"] = getRandoFact();
-          post["name"] = "cat-" + this.state.count;
-       
-          this.setState({
-            count: this.state.count + 1,
-            posts: this.state.posts.concat([post])
-          })
-        })
-      })
+  handleChange(nextSubreddit) {
+    this.props.dispatch(fetchPostsIfNeeded());
   }
 
-  deletePost(e) {
-    const array = this.state.posts.slice();
-    const index = array.indexOf(e);
-    array.splice(index, 1);
-    this.setState({posts:array});
-  }
-
-  sortByFacts() {
-    const array = this.state.posts.slice();
-    array.sort(sortByFactLength);
-    this.setState({posts: array});
+  handleRefreshClick(e) {
+    e.preventDefault();
+    this.props.dispatch(fetchPostsIfNeeded());
   }
 
   render() {
     return (
-      <div className="gallery">
-        <button onClick={this.addPost}>+Add Cat</button>
-        <button onClick={this.sortByFacts}>Sort by fact length</button>
-        <ul className="list-of-posts">
-          {
-            this.state.posts.map((postval) => {
-            return <Post key={postval.name} details={postval} deletePost={this.deletePost}/>
-            })
-          } 
-        </ul>
-      </div>
+        <div className="gallery">
+          <button onClick={this.handleRefreshClick}>+Add Cat</button>
+          <button onClick={this.props.sortByFacts}>Sort by fact length</button>
+          <ul className="list-of-posts">
+            {
+              this.props.posts.map((postval, i) => {
+              return <Post key={i} details={postval} deletePost={this.deletePost}/>
+              })
+            } 
+          </ul>
+        </div>
     );
   }
 }
 
+function mapStateToProps(state) {
+  const { posts } = state
+  const {
+    isFetching,
+    lastUpdated,
+  } = {
+    isFetching: true,
+    posts: []
+  }
 
-export default App;
+  return {
+    posts,
+    isFetching,
+    lastUpdated
+  }
+}
+
+export default connect(mapStateToProps)(App)
+//export default App;
