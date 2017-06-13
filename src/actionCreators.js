@@ -34,19 +34,19 @@ export function fetchPosts() {
 		dispatch(requestPic());
 
 		return fetch('http://mapd-cats.azurewebsites.net/catpics')
-		      .then(function(response) {
-		        if (response.status >= 400) {
-		          throw new Error("Bad response from server");
-		        }
-		        return response.text();
-		      })
-		      .then((text) => {
-		        const parseString = require('xml2js-parser').parseString;
-		        parseString(text, (err, result) => {
-		          const urlText = result.response.data[0].images[0].image[1].url[0];
-		          dispatch(receivePic(urlText));
-		          	
-		        })
-		      })
+	      .then(function(response) {
+	        if (response.status >= 400) {
+	          throw new Error("Bad response from server");
+	        }
+	        return response.text();
+	      })
+	      .then((text) => {
+	        const parseString = require('xml2js-parser').parseString;
+	        parseString(text, (err, result) => {
+	          const urlText = result.response.data[0].images[0].image[1].url[0];
+	          dispatch(receivePic(urlText));
+	          	
+	        })
+	      })
 	}
 }

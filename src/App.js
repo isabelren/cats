@@ -48,19 +48,8 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-  const { posts } = state
-  const {
-    isFetching,
-    lastUpdated,
-  } = {
-    isFetching: true,
-    posts: []
-  }
-
   return {
-    posts,
-    isFetching,
-    lastUpdated
+    posts:state.posts
   }
 }
 
@@ -69,4 +58,3 @@ function mapDispachToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispachToProps)(App)
-//export default App;

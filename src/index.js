@@ -9,11 +9,9 @@ import thunkMiddleware from 'redux-thunk';
 import { Provider } from 'react-redux';
 import rootReducer from './reducers/index';
 
-//import {fetchPostsIfNeeded} from './actionCreators';
 
 const defaultState = {
-	posts: [],
-	isFetching: false
+	posts: []
 }
 
 

@@ -1,6 +1,7 @@
 import { getRandoFact, sortByFactLength } from '../helpers';
 
 function posts(state = [], action) {
+	console.log(state, action)
 	switch (action.type) {
 		case 'REMOVE_CAT':
 			console.log(action)
